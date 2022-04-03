@@ -1,0 +1,47 @@
+.card {
+  width: 50%;
+  height: 50%;
+  background-color: #fff;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px;
+
+  button {
+    background-color: #ff5261;
+    width: 180px;
+    height: 60px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    font-weight: 700;
+    flex-shrink: 0;
+
+    &:disabled {
+      background-color: #ffbec4;
+      cursor: default;
+    }
+  }
+}
+
+.question {
+  font-size: 24px;
+  text-align: center;
+  text-align: justify;
+  line-height: 1.5em;
+  color: #1d355d;
+}
+
+.answers {
+  width: 100%;
+  //   display: flex;
+  //   flex-direction: column;
+  //   gap: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  //   grid-template-rows: repeat(5, minmax(auto, 50px));
+  grid-auto-rows: 40px;
+}
