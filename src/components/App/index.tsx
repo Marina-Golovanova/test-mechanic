@@ -1,12 +1,12 @@
 import React from "react";
 import { Layout } from "../Layout";
-import { Card } from "../Card";
+import { TestMechanicsCard } from "../TestMechanicsCard";
 
 export const App: React.FC = React.memo(function App() {
   return (
     <>
       <Layout>
-        <Card />
+        <TestMechanicsCard />
       </Layout>
     </>
   );

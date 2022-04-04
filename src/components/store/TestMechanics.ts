@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, action } from "mobx";
 
 type IQuestion = {
   label: string;
@@ -12,49 +12,80 @@ export class TestMechanics {
       "Бумажная полоска имеет длину 12 см. Для аппликации нужно отрезать 3/4 этой полоски. Сколько сантиметров нужно отрезать?",
     type: "multiple",
     answers: [
-      { id: 1, label: "9 см", correct: true },
-      { id: 2, label: "90 см", correct: true },
+      {
+        id: 1,
+        label:
+          "9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см",
+        correct: true,
+      },
+      {
+        id: 2,
+        label:
+          "9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см9 см",
+        correct: false,
+      },
       { id: 3, label: "109 см", correct: false },
-      // { id: 4, label: "109 см", correct: false },
-      // { id: 5, label: "109 см", correct: false },
-      // { id: 6, label: "109 см", correct: false },
-      // { id: 7, label: "109 см", correct: false },
-      // { id: 8, label: "109 см", correct: false },
-      // { id: 9, label: "109 см", correct: false },
+      { id: 4, label: "109 см", correct: false },
+      { id: 5, label: "109 см", correct: false },
+      { id: 6, label: "109 см", correct: false },
+      { id: 7, label: "109 см", correct: false },
+      { id: 8, label: "109 см", correct: false },
+      { id: 9, label: "109 см", correct: false },
+      { id: 10, label: "109 см", correct: false },
+      { id: 11, label: "109 см", correct: false },
     ],
   };
 
-  private userResultAnswer: boolean = false;
-
   public userAnswers: { id: number; value: boolean }[] = [];
 
+  private userResultAnswer: "allRight" | "partiallyRight" | "incorrect" =
+    "incorrect";
+
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {
+      checkAnswers: action.bound,
+    });
   }
 
-  setUserAnswer(answer: { id: number; value: boolean }) {
-    if (this.question.type === "multiple") {
-      this.userAnswers.push(answer);
+  public setUserAnswer(answer: {
+    id: number;
+    value: boolean;
+    checked: boolean;
+  }) {
+    if (answer.checked) {
+      if (this.question.type === "multiple") {
+        this.userAnswers.push(answer);
+      } else {
+        this.userAnswers = [answer];
+      }
     } else {
-      this.userAnswers = [answer];
+      this.resetUserAnswer(answer.id);
     }
   }
 
-  deleteUserAnswer(id: number) {
-    this.userAnswers = this.userAnswers.filter((answ) => answ.id !== id);
+  private resetUserAnswer(id: number) {
+    this.userAnswers = this.userAnswers.filter((it) => it.id !== id);
   }
 
-  checkAnswers() {
-    if (this.userAnswers.map((answ) => answ.value).includes(false)) {
-      this.userResultAnswer = false;
-    } else if (
-      this.userAnswers.length <
-      this.question.answers.filter((answ) => answ.correct).length
-    ) {
-      this.userResultAnswer = false;
+  public checkAnswers() {
+    const countOfCorrect = this.question.answers.filter(
+      (it) => it.correct
+    ).length;
+
+    if (this.userAnswers.some((it) => it.value)) {
+      this.userResultAnswer =
+        this.userAnswers.length !== countOfCorrect
+          ? "partiallyRight"
+          : "allRight";
     } else {
-      this.userResultAnswer = true;
+      this.userResultAnswer = this.userAnswers.find((it) => it.value)
+        ? "partiallyRight"
+        : "incorrect";
     }
     console.log(this.userResultAnswer);
   }
 }
+
+// center checkmarks
+// check long text
+// check long text without whitespaces
